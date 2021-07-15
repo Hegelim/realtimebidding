@@ -10,45 +10,66 @@
 8. *Optimal Reserve Prices in Upstream Auctions: Empirical Application on Online Video Advertising* - Derive a new downstream-corrected reserve price compared to the classical optimal monopoly price in the context where there is a upstream auction and a downstream auction. 
 9. *Learning Algorithms for Second-Price Auctions with Reserve* - Predict a beneficial reserve price with a combination of historical data and user features. 
 10. *A Dynamic Pricing Model for Unifying Programmatic Guarantee and Real-Time Bidding in Display Advertising* - Figure out an optimal percentage of future impressions to sell in advance and provides an explicit formula to calculate at what prices to sell. 
+11. *Information Disclosure in Real-Time Bidding  Advertising Markets* - Find equilibrium information disclosure strategies for  publishers in a RTB impression auction game. It shows information disclosure is profitable for publishers (142).
 
 ## Terminology
 
-* **Real-time bidding (RTB)**-  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second.
+* **Real-time bidding (RTB)**-  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second (usually less than 100ms [14]) It allows advertisers to bid for impressions based on targeted audiences [7].
 * **Vickrey Auction (Second price auction)** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid.
 * **Generalized second-price auction (GSP)** [link](https://en.wikipedia.org/wiki/Generalized_second-price_auction) - a non-truthful auction mechanism for multiple items. Each bidder places a bid. The highest bidder gets the first slot, the second-highest, the second slot and so on, but the highest bidder pays the price bid by the second-highest bidder, the second-highest pays the price bid by the third-highest, and so on.
-* **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information.
+* **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information [10].
 * **Private Information** - the information that is not available to the public. For example, the bidder's valuation of the item. 
 * **Supply-side platform (SSP)** - a supply-side platform or sell-side platform is a technology platform to enable web publishers and digital out-of-home media owners to manage their advertising inventory, fill it with ads, and receive revenue.
 * **Demand-side platform (DSP)** - a demand-side platform is a system that allows buyers of digital advertising inventory to manage multiple ad exchange and data exchange accounts through one interface.
 * **Ad Exchange** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed.
-* **User attributes (Impression attributes, user information)** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc.
-* **Placement qualities** - some statistics that measure the quality of the impression. For instance, click-through rate (CTR). $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her.
-* **Bid** - each advertiser submits a bid $p$ to online bidding platform that represents their private valuation of the item. Usually, we assume that bids are symmetric (drawn from the same distribution) and independent conditional on user attributes disclosed. Assuming $p$ is drawn from c.d.f. $F(p;u)$. 
-* **Reserve price** - the lowest bid that the seller is willing to accept for his item. Only bids that are higher than this price can get involved in the auction. 
-* **Pricing function** - a function $p^*$ that quotes a reserve price based on bid and potentially user attributes.
+* **User attributes (Impression attributes, user information)** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc [2].
+* **Placement qualities** - some statistics that measure the quality of the impression. For instance, click-through rate (CTR). $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her [2].
+* **Bid** - each advertiser submits a bid $p$ to online bidding platform that represents their private valuation of the item. Usually, we assume that bids are symmetric (drawn from the same distribution) and independent conditional on user attributes disclosed. Assuming $p$ is drawn from c.d.f. $F(p;u)$ [2]. 
+* **Reserve price** - the lowest bid that the seller is willing to accept for his item. Only bids that are higher than this price can get involved in the auction [15]. 
+* **Pricing function** - a function $p^*$ that quotes a reserve price based on bid and potentially user attributes [2].
 * **Revenue** - the amount earned. In our case, we care about the revenue for the publisher. 
 
-## Our problem: 
+## Workflow
 
 <img src="C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210714104331563.png" alt="image-20210714104331563" style="zoom:80%;" />
 
-1. **User** - user attributes... 
-2. **Advertisers** - bid prices...
-3. **Publisher** - reserve price...
+## Our problem
 
-## General Assumptions:
+1. Develop a structure for online bidding. 
+2. Find a reserve price that can maximize the expected revenue.
 
-1. The valuation of bidders is drawn i.i.d. from a given distribution.
-2. The distribution should be strictly increasing and differentiable.
-3. The distribution is usually assumed to be Uniform or Log-normal.
-4. The auction is Vickery Auction.
-5. The publisher has access to historical data. 
-6. The publisher has access to user attributes.
-7. The publisher and advertisers are risk-neutral. 
+## Define a good model
 
-## Overview:
+1. Easy to implement.
+2. Robust (Accurate, or better, optimal).
 
-### Bid-Price Policy with Dynamic Pricing $\mu^B$ 
+## General Assumptions
+
+1. The valuation of bidders is drawn i.i.d. from a given distribution [14].
+2. The distribution should be strictly increasing and differentiable [14].
+3. The distribution is usually assumed to be Uniform or Log-normal [15].
+4. The auction is Vickrey Auction [11, 14].
+5. The publisher has access to historical data [10]. 
+6. The publisher has access to user attributes [8, 10].
+7. The publisher and advertisers are risk-neutral [11]. 
+
+## Common Technologies
+
+* Clustering (k-means clustering...)
+* Regression (Multi-linear Regression, Ridge Regression, Logistic Regression...)
+* Reinforcement Learning (DQN...)
+* Neural Nets 
+* SVM
+* Pure Theories
+
+## Variations
+
+* There can be both an upstream and a downstream Ad Exchange [1].
+* The publisher can choose to disclose user information or not [7].
+
+## Algorithms
+
+### Bid-Price Policy with Dynamic Pricing $\mu^B$ [2]
 
 * Core idea:
 
@@ -63,7 +84,7 @@
   * **Assumptions**: have a lot of assumptions. For example, the bids are drawn i.i.d. from $F$.
   * **Hyper-parameter tuning**: have to tune the hyper-parameter $\gamma$. 
 
-### Clustering and Regression 
+### Clustering and Regression [6]
 
 * Core idea:
 
@@ -77,7 +98,7 @@
   * **Ambiguity**: it is not clear how the bid selector works and how it nominates the cluster (6). It is also not clear (to me) how the autonomous agent based system is developed. 
   * **Optimality**: the optimal strategies mentioned in the article is optimal relative to other possible bidding strategies produced by trees. It is not rigorous whether it is the absolute optimal strategy. 
 
-### Multiple Linear Regression with Kalman Filter (MLRKF) 
+### Multiple Linear Regression with Kalman Filter (MLRKF) [8]
 
 * Core idea:
 
@@ -91,7 +112,7 @@
 * Cons:
   * **Complexity**: needs to have a very good understanding of multi-dimensional Kalman filter. 
 
-### OneShot 
+### OneShot [15]
 
 * Core Idea:
 
@@ -105,7 +126,7 @@
   * **Hyper-parameter tuning**: in practice, one needs to tune 4 parameters based on the training data. 
   * **Assumptions**: needs to assume the distribution of bids, which can lead to poor performance (9).  
 
-### DC Programming (Not DC Comics :D)
+### DC Programming (Not DC Comics :D) [10]
 
 * Core Idea (15):
 
@@ -118,7 +139,7 @@
 * Cons:
   * **Complexity**: cannot understand :smile:. 
 
-### Dynamic Pricing model 
+### Dynamic Pricing model [3]
 
 * Core Idea:
 
@@ -139,7 +160,7 @@
 | DC Programming                                        | a lot                                                   | Yes                     |
 | Dynamic Pricing model                                 | a lot                                                   |                         |
 
-## Literature Review
+## Detailed Review
 
 ### Optimal Auctions
 
@@ -328,18 +349,20 @@ Core Ideas:
 
 ## References 
 
-1. <a id="ref1"></a>Alcobendas Lisbona, M. A., Chammas, S., & Lee, K.-chih. (2016). Optimal Reserve Prices in Upstream Auctions. *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*. https://doi.org/10.1145/2939672.2939877 
-2. <a id="ref2"></a>Balseiro, S. R., Feldman, J., Mirrokni, V., & Muthukrishnan, S. (2014). Yield Optimization of Display Advertising with Ad Exchange. *Management Science*, *60*(12), 2886–2907. https://doi.org/10.1287/mnsc.2014.2017 
-3. <a id="ref3"></a>Chen, B., Yuan, S., & Wang, J. (2014). A Dynamic Pricing Model for Unifying Programmatic Guarantee and Real-Time Bidding in Display Advertising. *Proceedings of 20th ACM SIGKDD Conference on Knowledge Discovery and Data Mining - ADKDD'14*. https://doi.org/10.1145/2648584.2648585 
-4. <a id="ref4"></a>Davis, A. M., Katok, E., & Kwasnica, A. M. (2011). Do Auctioneers Pick Optimal Reserve Prices? *Management Science*, *57*(1), 177–192. https://doi.org/10.1287/mnsc.1100.1258 
-5. <a id="ref5"></a>Kaur, P., Goyal, M., & Lu, J. (2012). Pricing Analysis in Online Auctions Using Clustering and Regression Tree Approach. *Lecture Notes in Computer Science*, 248–257. https://doi.org/10.1007/978-3-642-27609-5_16 
-6. <a id="ref6"></a>Li, X., Dong, H., & Han, S. (2020). Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online Auctions. *2020 IEEE Intl Conf on Dependable, Autonomic and Secure Computing, Intl Conf on Pervasive Intelligence and Computing, Intl Conf on Cloud and Big Data Computing, Intl Conf on Cyber Science and Technology Congress (DASC/PiCom/CBDCom/CyberSciTech)*. https://doi.org/10.1109/dasc-picom-cbdcom-cyberscitech49142.2020.00042 
-7. <a id="ref7"></a>McAfee, R. P., & Reny, P. J. (1992). Correlated Information and Mecanism Design. *Econometrica*, *60*(2), 395. https://doi.org/10.2307/2951601 
-8. <a id="ref8"></a>Mohri, M., & Medina, A. M. (2016). Learning Algorithms for Second-Price Auctions with Reserve. *Journal of Machine Learning Research*, *17*, 1–25. 
-9. <a id="ref9"></a>Myerson, R. B. (1981). Optimal Auction Design. *Mathematics of Operations Research*, *6*(1), 58–73. 
-10. <a id="ref10"></a>Ostrovsky, M., & Schwarz, M. (2009). Reserve Prices in Internet Advertising Auctions: A Field Experiment. *SSRN Electronic Journal*. https://doi.org/10.2139/ssrn.1573947 
-11. <a id="ref11"></a>Preston, M. A. R., & Daniel, V. (1992). Updating the Reserve Price in Common Value Auctions. *Discussion Paper, Northwestern University, Kellogg School of Management, Center for Mathematical Studies in Economics and Management Science, Evanston, IL*. 
-12. <a id="ref12"></a>Riley, J. G., & Samuelson, W. F. (1981). Optimal Auctions. *The American Economic Review*, *71*, 381–392. https://www.cs.princeton.edu/courses/archive/spring09/cos444/papers/riley_samuelson81.pdf. 
-13. <a id="ref13"></a>Yuan, S., Wang, J., Chen, B., Mason, P., & Seljan, S. (2014). An empirical study of reserve price optimisation in real-time bidding. *Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*. https://doi.org/10.1145/2623330.2623357 
-14. <a id="ref14"></a>Zhang, W., Yuan, S., & Wang, J. (2014). Optimal real-time bidding for display advertising. *Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*. https://doi.org/10.1145/2623330.2623633 
-
+1. Alcobendas Lisbona, Miguel Angel, et al. “Optimal Reserve Prices in Upstream Auctions.” *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 2016, doi:10.1145/2939672.2939877. 
+2. Balseiro, Santiago R., et al. “Yield Optimization of Display Advertising with Ad Exchange.” *Management Science*, vol. 60, no. 12, 2014, pp. 2886–2907., doi:10.1287/mnsc.2014.2017. 
+3. Chen, Bowei, et al. “A Dynamic Pricing Model for Unifying Programmatic Guarantee and Real-Time Bidding in Display Advertising.” *Proceedings of 20th ACM SIGKDD Conference on Knowledge Discovery and Data Mining - ADKDD'14*, 2014, doi:10.1145/2648584.2648585. 
+4. Davis, Andrew M., et al. “Do Auctioneers Pick Optimal Reserve Prices?” *Management Science*, vol. 57, no. 1, 2011, pp. 177–192., doi:10.1287/mnsc.1100.1258. 
+5. Fernandez-Tapia, Joaquin, et al. “Optimal Real-Time Bidding Strategies.” *Applied Mathematics Research EXpress*, 2016, doi:10.1093/amrx/abw007. 
+6. Kaur, Preetinder, et al. “Pricing Analysis in Online Auctions Using Clustering and Regression Tree Approach.” *Lecture Notes in Computer Science*, 2012, pp. 248–257., doi:10.1007/978-3-642-27609-5_16. 
+7. Li, Juanjuan, et al. “Information Disclosure in Real-Time Bidding Advertising Markets.” *Proceedings of 2014 IEEE International Conference on Service Operations and Logistics, and Informatics*, 2014, doi:10.1109/soli.2014.6960708. 
+8. Li, Xiaohui, et al. “Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online Auctions.” *2020 IEEE Intl Conf on Dependable, Autonomic and Secure Computing, Intl Conf on Pervasive Intelligence and Computing, Intl Conf on Cloud and Big Data Computing, Intl Conf on Cyber Science and Technology Congress (DASC/PiCom/CBDCom/CyberSciTech)*, 2020, doi:10.1109/dasc-picom-cbdcom-cyberscitech49142.2020.00042. 
+9. McAfee, R. Preston, and Philip J. Reny. “Correlated Information and Mecanism Design.” *Econometrica*, vol. 60, no. 2, 1992, p. 395., doi:10.2307/2951601. 
+10. Mohri, Mehryar, and Andres Munoz Medina. “Learning Algorithms for Second-Price Auctions with Reserve.” *Journal of Machine Learning Research*, vol. 17, 16 Apr. 2016, pp. 1–25. 
+11. Myerson, Roger B. “Optimal Auction Design.” *Mathematics of Operations Research*, vol. 6, no. 1, Feb. 1981, pp. 58–73. 
+12. Ostrovsky, Michael, and Michael Schwarz. “Reserve Prices in Internet Advertising Auctions: A Field Experiment.” *SSRN Electronic Journal*, 2009, doi:10.2139/ssrn.1573947. 
+13. Preston, McAfee R., and Vincent Daniel. “Updating the Reserve Price in Common Value Auctions.” *Discussion Paper, Northwestern University, Kellogg School of Management, Center for Mathematical Studies in Economics and Management Science, Evanston, IL*, ser. 977, 1992. *977*. 
+14. Riley, John G., and William F. Samuelson. “Optimal Auctions.” *The American Economic Review*, vol. 71, ser. 3, June 1981, pp. 381–392. *3*, www.cs.princeton.edu/courses/archive/spring09/cos444/papers/riley_samuelson81.pdf. 
+15. Yuan, Shuai, et al. “An Empirical Study of Reserve Price Optimisation in Real-Time Bidding.” *Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 2014, doi:10.1145/2623330.2623357. 
+16. Zhang, Weinan, et al. “Feedback Control of Real-Time Display Advertising.” *Proceedings of the Ninth ACM International Conference on Web Search and Data Mining*, 2016, doi:10.1145/2835776.2835843. 
+17. Zhang, Weinan, et al. “Optimal Real-Time Bidding for Display Advertising.” *Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 2014, doi:10.1145/2623330.2623633. 

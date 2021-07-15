@@ -13,9 +13,13 @@
 
 ## Terminology
 
-* **Real-time bidding** -  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second.
-* **Vickrey Auction (Second price auction)** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- A type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid.
-* **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information. 
+* **Real-time bidding (RTB)**-  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second.
+* **Vickrey Auction (Second price auction)** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid.
+* **Generalized second-price auction (GSP)** [link](https://en.wikipedia.org/wiki/Generalized_second-price_auction) - a non-truthful auction mechanism for multiple items. Each bidder places a bid. The highest bidder gets the first slot, the second-highest, the second slot and so on, but the highest bidder pays the price bid by the second-highest bidder, the second-highest pays the price bid by the third-highest, and so on.
+* **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information.
+* **Private Information** - the information that is not available to the public. For example, the bidder's valuation of the item. 
+* **Supply-side platform (SSP)** - a supply-side platform or sell-side platform is a technology platform to enable web publishers and digital out-of-home media owners to manage their advertising inventory, fill it with ads, and receive revenue.
+* **Demand-side platform (DSP)** - a demand-side platform is a system that allows buyers of digital advertising inventory to manage multiple ad exchange and data exchange accounts through one interface.
 * **Ad Exchange** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed.
 * **User attributes (Impression attributes, user information)** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc.
 * **Placement qualities** - some statistics that measure the quality of the impression. For instance, click-through rate (CTR). $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her.
@@ -39,7 +43,8 @@
 3. The distribution is usually assumed to be Uniform or Log-normal.
 4. The auction is Vickery Auction.
 5. The publisher has access to historical data. 
-6. The publisher has a set of known attributes.
+6. The publisher has access to user attributes.
+7. The publisher and advertisers are risk-neutral. 
 
 ## Overview:
 

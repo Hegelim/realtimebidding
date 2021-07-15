@@ -1,4 +1,4 @@
-## Summaries
+## Summary
 
 1. *Optimal Auctions* - Provide a theoretical base on how to set an optimal reserve price such that it maximizes the revenue for the publisher. 
 2. *Optimal Auction Design* - Provide mathematical proof on how to design an optimal auction mechanism that maximizes the revenue for the publisher. 
@@ -69,6 +69,23 @@
 
 ## Algorithms
 
+### Multiple Linear Regression with Kalman Filter (MLRKF) [8]
+
+* Core idea:
+
+  ![image-20210714102011833](C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210714102011833.png)
+
+* Pros:
+
+  * **Performance**: produce highly accurate results with less training data and lower time cost (182). It also reduces over-fitting. 
+  * **Dynamically update coefficient**: the MLRKFP model can dynamically optimize regression coefficients to produce more accurate results (183). 
+  * **Implementation**: multiple-linear regression and Kalman filter is relatively easy to implement using existing tools such as sklearn and pyfilter. 
+  * **Input**: only need to know $x_1, x_2, ... ,x_n$ as descriptive variables, coefficients can be learned by regression (184). 
+
+* Cons:
+
+  * **Complexity**: needs to have a very good understanding of multi-dimensional Kalman filter. 
+
 ### Bid-Price Policy with Dynamic Pricing $\mu^B$ [2]
 
 * Core idea:
@@ -97,20 +114,6 @@
   * **Relevance**: the article mainly talks about how to predict the end-price from a set of auctions, whereas  in our problem, there is one auction and many bidders. 
   * **Ambiguity**: it is not clear how the bid selector works and how it nominates the cluster (6). It is also not clear (to me) how the autonomous agent based system is developed. 
   * **Optimality**: the optimal strategies mentioned in the article is optimal relative to other possible bidding strategies produced by trees. It is not rigorous whether it is the absolute optimal strategy. 
-
-### Multiple Linear Regression with Kalman Filter (MLRKF) [8]
-
-* Core idea:
-
-  ![image-20210714102011833](C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210714102011833.png)
-
-* Pros:
-  * **Performance**: produce highly accurate results with less training data and lower time cost (182). It also reduces over-fitting. 
-  * **Dynamically update coefficient**: the MLRKFP model can dynamically optimize regression coefficients to produce more accurate results (183). 
-  * **Implementation**: multiple-linear regression and Kalman filter is relatively easy to implement using existing tools such as sklearn and pyfilter. 
-  * **Input**: only need to know $x_1, x_2, ... ,x_n$ as descriptive variables, coefficients can be learned by regression (184). 
-* Cons:
-  * **Complexity**: needs to have a very good understanding of multi-dimensional Kalman filter. 
 
 ### OneShot [15]
 

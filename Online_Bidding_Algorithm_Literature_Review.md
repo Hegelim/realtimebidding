@@ -8,11 +8,13 @@
 6. *Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online  Auctions* - Show that MLRKF model effectively reduces training time and increases training accuracy in predicting end prices in auctions. 
 7. *An Empirical Study of Reserve Price Optimization in Real-Time Bidding* - Propose an algorithm OneShot for publisher revenue optimization in Real-Time Bidding (RTB) and compares its performance with several other commonly adopted algorithms. 
 8. *Optimal Reserve Prices in Upstream Auctions: Empirical Application on Online Video Advertising* - Derive a new downstream-corrected reserve price compared to the classical optimal monopoly price in the context where there is a upstream auction and a downstream auction. 
-9. 
+9. *Learning Algorithms for Second-Price Auctions with Reserve* - Predict a beneficial reserve price with a combination of historical data and user features. 
 
 ## Terminology
 
 * **Real-time bidding** -  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second.
+* **Vickrey Auction (Second price auction)** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- A type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid.
+* **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information [[7]](#ref7). 
 * **Ad Exchange** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed [[7]](#ref7).
 * **User attributes (Impression attributes, user information)** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc. [[2]](#ref1)
 * **Placement qualities** - some statistics that measure the quality of the impression. For instance, click-through rate (CTR). $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her. [[2]](#ref1)
@@ -29,14 +31,16 @@
 2. **Advertisers** - bid prices...
 3. **Publisher** - reserve price...
 
-## Assumptions:
+## General Assumptions:
 
 1. The valuation of bidders is drawn i.i.d. from a given distribution [[7]](#ref7)[[11]](#ref11) 
 2. The distribution should be strictly increasing and differentiable [[11]](#ref11)
 3. The distribution is usually assumed to be Uniform or Log-normal [[12]](#ref12)
-4. 
+4. The auction is Vickery Auction [[8]](#ref8)[[11]](#ref11).
+5. The publisher has access to historical data [[7]](#ref7). 
+6. The publisher has a set of known attributes [[2]](#ref2)[[4]](#ref4)[[5]](#ref5)[[7]](#ref7).
 
-## Breakdown & Pros and Cons
+## Overview:
 
 ### Bid-Price Policy with Dynamic Pricing $\mu^B$ [[2]](#ref1)
 
@@ -95,6 +99,19 @@
   * **Hyper-parameter tuning**: in practice, one needs to tune 4 parameters based on the training data. 
   * **Assumptions**: needs to assume the distribution of bids, which can lead to poor performance (9).  
 
+### DC Programming [[7]](#ref7) (Not DC Comics :D)
+
+* Core Idea (15):
+
+  ![image-20210715152033504](C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210715152033504.png)
+
+* Pros:
+  * **Assumptions**: did not assume bids are i.i.d. and are very close to reality (3).
+  * **Rigorous**: present a very detailed proof of the algorithm. 
+  * **Speed**: $O(mlogm)$ (2).
+* Cons:
+  * **Complexity**: cannot understand :D. 
+
 ## Comparison
 
 | Algorithms                                                   | Parameters                                              | Update between auctions |
@@ -103,6 +120,7 @@
 | Clustering and Regression [[4]](#ref3)                       | $k$, Bid Selector, attributes for an auction            | No                      |
 | Multiple Linear Regression with Kalman Filter (MLRKF) [[5]](#ref4) | data features (188)                                     | Yes                     |
 | OneShot [[11]](#ref10)                                       | $\epsilon$, $\lambda_h$, $\lambda_e$, $\lambda_l$ (5)   | Yes                     |
+| DC Programming [[7]](#ref7)                                  | a lot                                                   | Yes                     |
 
 ## Literature Review
 

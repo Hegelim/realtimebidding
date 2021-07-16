@@ -13,6 +13,21 @@
 11. *Information Disclosure in Real-Time Bidding  Advertising Markets* - Find equilibrium information disclosure strategies for  publishers in a RTB impression auction game. It shows information disclosure is profitable for publishers (142).
 12. *Optimal Real-Time Bidding for Display Advertising* - Design an optimal bidding strategy for DSP. 
 13. *Optimal Real-Time Bidding Strategies* - Design an optimal bidding strategy for DSP. 
+14. *Real-time Bidding for Online Advertising: Measurement and Analysis* - Analyze the behavior of RTB including bids' distributions, daily pacing, periodic patterns, etc through data. 
+15. *Predicting Winning Price in Real Time Bidding with Censored Data* - learn the winning price, in the aspect of a DSP, with historical RTB bids and to deal with the problem of various winning price censoring at the same time. 
+
+## Closely related articles
+
+1. Optimal Auctions 
+2. Optimal Auction Design 
+3. Reserve Prices in Internet Advertising Auctions: A Field Experiment
+4. An Empirical Study of Reserve Price Optimisation in Real-Time Bidding
+5. Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online  Auctions
+6. Real-time Bidding for Online Advertising: Measurement and Analysis
+7. Learning Algorithms for Second-Price Auctions with Reserve
+8. Information Disclosure in Real-Time Bidding  Advertising Markets
+9. Predicting the final prices of online auction items
+10. Predicting Winning Price in Real Time Bidding with Censored Data
 
 ## Terminology
 
@@ -50,9 +65,9 @@
 1. There is a single seller (monopolistic) with n buyers [11, 14].
 2. The seller does not know how much the bidders are willing to pay [11].
 3. The buyers don't know other's bids and will not cooperate (non-cooperative) [14], because of **preference uncertainty** and **quality uncertainty** [11].
-4. The **value estimates** distribution should be strictly increasing and differentiable [14].
-5. The distribution is usually assumed to be Uniform or Log-normal [12, 15].
-6. **In second-price auctions, buyers will bid exactly their value estimates** [14]*.
+4. The **value estimates** **(reservation value)** distribution should be strictly increasing and differentiable [14, 15].
+5. The distribution is usually assumed to be Uniform or Log-normal [12, 15, 20].
+6. **In second-price auctions, buyers will bid exactly their value estimates** [14, 15]*.
 7. The **bids** are drawn i.i.d. from **value estimates** distribution [11, 14].
 8. The RTB is Vickrey Auction (second-price auction) [5, 11, 14].
 9. The publisher has access to historical data [10]. 
@@ -64,14 +79,21 @@
 * Clustering (k-means clustering...)
 * Regression (Multi-linear Regression, Ridge Regression, Logistic Regression...)
 * Reinforcement Learning (DQN...)
-* Neural Nets 
+* Deep Learning 
 * SVM
+* Mixed Models
 * Pure Theories
+
+## Core Findings
+
+* The optimal reserve price does not depend on the number of buyers [14].
+* In practice, the Uniform distribution works better than Log-normal distribution [15, 20].
 
 ## Variations
 
 * There can be both an upstream and a downstream Ad Exchange [1].
 * The publisher can choose to disclose user information or not [7].
+* The publisher can have the option to set a soft floor price and a hard floor price [20].
 
 ## Our problem
 
@@ -90,6 +112,8 @@
 
 ## Pure Theories
 
+### Set $v_*$
+
 Assuming i.i.d. and buyers are risk-neutral with only **preference uncertainty**, the optimal reserve price can be set according to [11] as: 
 
 $v_* = v_0 + \sum_{j \in N, j \neq 0} e_j(v_j) + \frac{1-F(v_*)}{f(v_*)}$ 
@@ -102,8 +126,9 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 
 ### Set $F$
 
-1. $F$ is often assumed to be Uniform distribution or Log-normal distribution [12, 15]
-2. When $F$ is uniform distribution ($F(v) = v$ for $v \in [0, 1]$), and $v_0 = 0$, it is proved that $v_* = \frac{1}{2}$ [14].
+1. $F$ is often assumed to be Uniform distribution or Log-normal distribution [12, 15].
+2. The parameters of F are set based on historical data [15].
+3. When $F$ is uniform distribution ($F(v) = v$ for $v \in [0, 1]$), and $v_0 = 0$, it is proved that $v_* = \frac{1}{2}$ [14].
 
 ### Set $v_0$
 
@@ -419,3 +444,5 @@ Core Ideas:
 17. Zhang, Weinan, et al. “Optimal Real-Time Bidding for Display Advertising.” *Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 2014, doi:10.1145/2623330.2623633. 
 18. X. Li, L. Liu, L. Wu, Z. Zhang, “ Predicting the final prices of online  auction items,”Expert Systems with Applications,vol.32,no.3,pp.542- 550, 2006.
 19. C.H. Wu, M.Y. Yeh, M.S. Chen, “Predicting winning price in real time bidding with censored data,” ACM SIGKDD International  Conference on Knowledge Discovery and Data Mining, ACM, pp.  1305–1314, 2015.
+20. Yuan, Shuai, et al. “Real-Time Bidding for Online Advertising.” *Proceedings of the Seventh International Workshop on Data Mining for Online Advertising - ADKDD '13*, 2013, doi:10.1145/2501040.2501980. 
+

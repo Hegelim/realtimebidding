@@ -11,11 +11,13 @@
 9. *Learning Algorithms for Second-Price Auctions with Reserve* - Predict a beneficial reserve price with a combination of historical data and user features. 
 10. *A Dynamic Pricing Model for Unifying Programmatic Guarantee and Real-Time Bidding in Display Advertising* - Figure out an optimal percentage of future impressions to sell in advance and provides an explicit formula to calculate at what prices to sell. 
 11. *Information Disclosure in Real-Time Bidding  Advertising Markets* - Find equilibrium information disclosure strategies for  publishers in a RTB impression auction game. It shows information disclosure is profitable for publishers (142).
+12. *Optimal Real-Time Bidding for Display Advertising* - Design an optimal bidding strategy for DSP. 
+13. *Optimal Real-Time Bidding Strategies* - Design an optimal bidding strategy for DSP. 
 
 ## Terminology
 
-* **Real-time bidding (RTB)**-  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second (usually less than 100ms [14]) It allows advertisers to bid for impressions based on targeted audiences [7].
-* **Vickrey Auction (Second price auction)** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid.
+* **Real-time bidding (RTB)**-  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second (usually less than 100ms [5, 14]) It allows advertisers to bid for impressions based on targeted audiences [7] on a per-access bases [5].
+* **Vickrey Auction (Second price auction)** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid. This type of auction gives participants an incentive to reveal their true valuation of the item [5].
 * **Generalized second-price auction (GSP)** [link](https://en.wikipedia.org/wiki/Generalized_second-price_auction) - a non-truthful auction mechanism for multiple items. Each bidder places a bid. The highest bidder gets the first slot, the second-highest, the second slot and so on, but the highest bidder pays the price bid by the second-highest bidder, the second-highest pays the price bid by the third-highest, and so on.
 * **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information [10].
 * **Private Information** - the information that is not available to the public. For example, the bidder's valuation of the item. 
@@ -23,35 +25,39 @@
 * **Demand-side platform (DSP)** - a demand-side platform is a system that allows buyers of digital advertising inventory to manage multiple ad exchange and data exchange accounts through one interface.
 * **Ad Exchange** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed.
 * **User attributes (Impression attributes, user information)** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc [2].
-* **Placement qualities** - some statistics that measure the quality of the impression. For instance, click-through rate (CTR). $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her [2].
-* **Bid** - each advertiser submits a bid $p$ to online bidding platform that represents their private valuation of the item. Usually, we assume that bids are symmetric (drawn from the same distribution) and independent conditional on user attributes disclosed. Assuming $p$ is drawn from c.d.f. $F(p;u)$ [2]. 
+* **Placement qualities** **(quality score [15]) **- some statistics that measure the quality of the impression. For instance, click-through rate (CTR) or conversation rate (CVR) then times the value of a click/conversation [17]. $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her [2].
+* **Value estimate** **(reservation value)**- for each bidder and seller $i$, there is some quantity $t_i$ which is $i$'s value estimate for the object, and which represents the maximum amount which $i$ is willing to pay for the object given his current information about it [11].
+* **Bid** - each advertiser submits a bid $p$ to online bidding platform that represents their private valuation of the item. Usually, we assume that bids are symmetric (drawn from the same distribution) and independent conditional on user attributes disclosed [2]. 
+* **Key Performance Index (KPI)** - the total performance of a campaign, e.g. the number of clicks, conversations, or total revenue [5, 17].
+* **Opportunity cost** - the amount of money the publisher could have earned by selling impressions through guaranteed offline contracts [2, 7].
 * **Reserve price** - the lowest bid that the seller is willing to accept for his item. Only bids that are higher than this price can get involved in the auction [15]. 
 * **Pricing function** - a function $p^*$ that quotes a reserve price based on bid and potentially user attributes [2].
 * **Revenue** - the amount earned. In our case, we care about the revenue for the publisher. 
+* **Preference uncertainty** - the bidders' personal preferences might be unknown to other agents (for example, if the object is painting, the others might not know how much he really enjoys looking at the painting) [11].
+* **Quality uncertainty** - the bidder  might have some special information about the intrinsic quality of the object (he might  know if the painting is an old master or a copy) [11].
 
-## Workflow
+## Workflow [2, 5]
 
-<img src="C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210714104331563.png" alt="image-20210714104331563" style="zoom:80%;" />
+![image-20210716103714145](C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210716103714145.png)
 
-## Our problem
-
-1. Develop a structure for online bidding. 
-2. Find a reserve price that can maximize the expected revenue.
-
-## Define a good model
-
-1. Easy to implement.
-2. Robust (Accurate, or better, optimal).
+1. On the supply side, each time a user visits a website, the publisher can choose to allocate the impression to guaranteed contract advertisers, or connect to Ad Exchange for RTB. 
+2. On the demand side, DSP receives the requests, together with user information, and choose the bid level that best suits their strategy. 
+3. On Ad Exchange, the bids are processed, the slot is attributed to the bidder who has proposed the highest bid and the price is paid depending on the type of the auction. 
+4. If no bids won, the impression is rejected and the publisher can choose to either allocate it to the guaranteed contract or discard it. 
 
 ## General Assumptions
 
-1. The valuation of bidders is drawn i.i.d. from a given distribution [14].
-2. The distribution should be strictly increasing and differentiable [14].
-3. The distribution is usually assumed to be Uniform or Log-normal [15].
-4. The auction is Vickrey Auction [11, 14].
-5. The publisher has access to historical data [10]. 
-6. The publisher has access to user attributes [8, 10].
-7. The publisher and advertisers are risk-neutral [11]. 
+1. There is a single seller (monopolistic) with n buyers [11, 14].
+2. The seller does not know how much the bidders are willing to pay [11].
+3. The buyers don't know other's bids and will not cooperate (non-cooperative) [14], because of **preference uncertainty** and **quality uncertainty** [11].
+4. The **value estimates** distribution should be strictly increasing and differentiable [14].
+5. The distribution is usually assumed to be Uniform or Log-normal [12, 15].
+6. **In second-price auctions, buyers will bid exactly their value estimates** [14]*.
+7. The **bids** are drawn i.i.d. from **value estimates** distribution [11, 14].
+8. The RTB is Vickrey Auction (second-price auction) [5, 11, 14].
+9. The publisher has access to historical data [10]. 
+10. The publisher has access to user attributes [8, 10].
+11. The publisher and advertisers are risk-neutral [11, 14]. 
 
 ## Common Technologies
 
@@ -67,7 +73,49 @@
 * There can be both an upstream and a downstream Ad Exchange [1].
 * The publisher can choose to disclose user information or not [7].
 
-## Algorithms
+## Our problem
+
+1. Develop a structure for online bidding. 
+2. Find a reserve price that can maximize the expected revenue.
+
+## Define a good model
+
+1. Easy to implement.
+2. Robust (Accurate, or better, optimal).
+
+## Two approaches
+
+1. Set the reserve price directly based on pure theories (Optimal Auctions, variations...). 
+2. Learn the reserve price through historical data (machine learning...). 
+
+## Pure Theories
+
+Assuming i.i.d. and buyers are risk-neutral with only **preference uncertainty**, the optimal reserve price can be set according to [11] as: 
+
+$v_* = v_0 + \sum_{j \in N, j \neq 0} e_j(v_j) + \frac{1-F(v_*)}{f(v_*)}$ 
+
+where $e_j(v_j)$ is revision effect function [11].
+
+For pure **preference uncertainty** and **quality uncertainty**, the optimal reserve price is set according to [14, 15] as: 
+
+$v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
+
+### Set $F$
+
+1. $F$ is often assumed to be Uniform distribution or Log-normal distribution [12, 15]
+2. When $F$ is uniform distribution ($F(v) = v$ for $v \in [0, 1]$), and $v_0 = 0$, it is proved that $v_* = \frac{1}{2}$ [14].
+
+### Set $v_0$
+
+1. From guaranteed contract with a flat CPM [15].
+
+2. From another ad network where the average revenue is known [15], in this case, we can first compute the reserve-price $\alpha(t)$ assuming private-value-free by averaging past payoff. 
+
+   $\alpha(t) = \frac{1}{M} \sum_{i=t-M}^{t-1} r(i)$
+
+   Then, plug in the previous equation and get $V_0$. 
+
+## Learning Algorithms
 
 ### Multiple Linear Regression with Kalman Filter (MLRKF) [8]
 
@@ -129,7 +177,7 @@
   * **Hyper-parameter tuning**: in practice, one needs to tune 4 parameters based on the training data. 
   * **Assumptions**: needs to assume the distribution of bids, which can lead to poor performance (9).  
 
-### DC Programming (Not DC Comics :D) [10]
+### DC Programming (Not DC Comics :smile:) [10]
 
 * Core Idea (15):
 
@@ -369,3 +417,5 @@ Core Ideas:
 15. Yuan, Shuai, et al. “An Empirical Study of Reserve Price Optimisation in Real-Time Bidding.” *Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 2014, doi:10.1145/2623330.2623357. 
 16. Zhang, Weinan, et al. “Feedback Control of Real-Time Display Advertising.” *Proceedings of the Ninth ACM International Conference on Web Search and Data Mining*, 2016, doi:10.1145/2835776.2835843. 
 17. Zhang, Weinan, et al. “Optimal Real-Time Bidding for Display Advertising.” *Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 2014, doi:10.1145/2623330.2623633. 
+18. X. Li, L. Liu, L. Wu, Z. Zhang, “ Predicting the final prices of online  auction items,”Expert Systems with Applications,vol.32,no.3,pp.542- 550, 2006.
+19. C.H. Wu, M.Y. Yeh, M.S. Chen, “Predicting winning price in real time bidding with censored data,” ACM SIGKDD International  Conference on Knowledge Discovery and Data Mining, ACM, pp.  1305–1314, 2015.

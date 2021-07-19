@@ -25,9 +25,9 @@
 5. Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online  Auctions
 6. Real-time Bidding for Online Advertising: Measurement and Analysis
 7. Learning Algorithms for Second-Price Auctions with Reserve
-8. Information Disclosure in Real-Time Bidding  Advertising Markets
-9. Predicting the final prices of online auction items
-10. Predicting Winning Price in Real Time Bidding with Censored Data
+8. Reserve Price Optimization at Scale
+9. Information Disclosure in Real-Time Bidding  Advertising Markets
+10. Predicting the final prices of online auction items
 
 ## Terminology
 
@@ -39,9 +39,9 @@
 * **Supply-side platform (SSP)** - a supply-side platform or sell-side platform is a technology platform to enable web publishers and digital out-of-home media owners to manage their advertising inventory, fill it with ads, and receive revenue.
 * **Demand-side platform (DSP)** - a demand-side platform is a system that allows buyers of digital advertising inventory to manage multiple ad exchange and data exchange accounts through one interface.
 * **Ad Exchange** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed.
-* **User attributes (Impression attributes, user information)** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc [2].
+* **User attributes (Impression attributes/user information/public information [10])** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc [2].
 * **Placement qualities** **(quality score [15]) **- some statistics that measure the quality of the impression. For instance, click-through rate (CTR) or conversation rate (CVR) then times the value of a click/conversation [17]. $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her [2].
-* **Value estimate** **(reservation value)**- for each bidder and seller $i$, there is some quantity $t_i$ which is $i$'s value estimate for the object, and which represents the maximum amount which $i$ is willing to pay for the object given his current information about it [11].
+* **Value estimate** **(reservation value/private value [15])**- for each bidder and seller $i$, there is some quantity $t_i$ which is $i$'s value estimate for the object, and which represents the maximum amount which $i$ is willing to pay for the object given his current information about it [11].
 * **Bid** - each advertiser submits a bid $p$ to online bidding platform that represents their private valuation of the item. Usually, we assume that bids are symmetric (drawn from the same distribution) and independent conditional on user attributes disclosed [2]. 
 * **Key Performance Index (KPI)** - the total performance of a campaign, e.g. the number of clicks, conversations, or total revenue [5, 17].
 * **Opportunity cost** - the amount of money the publisher could have earned by selling impressions through guaranteed offline contracts [2, 7].
@@ -65,7 +65,7 @@
 1. There is a single seller (monopolistic) with n buyers [11, 14].
 2. The seller does not know how much the bidders are willing to pay [11].
 3. The buyers don't know other's bids and will not cooperate (non-cooperative) [14], because of **preference uncertainty** and **quality uncertainty** [11].
-4. The **value estimates** **(reservation value)** distribution should be strictly increasing and differentiable [14, 15].
+4. The **value estimates** **(reservation value/private value)** distribution should be strictly increasing and differentiable [14, 15].
 5. The distribution is usually assumed to be Uniform or Log-normal [12, 15, 20].
 6. **In second-price auctions, buyers will bid exactly their value estimates** [14, 15]*.
 7. The **bids** are drawn i.i.d. from **value estimates** distribution [11, 14].
@@ -81,6 +81,7 @@
 * Reinforcement Learning (DQN...)
 * Deep Learning 
 * SVM
+* KNN [22]
 * Mixed Models
 * Pure Theories
 
@@ -112,7 +113,9 @@
 
 ## Pure Theories
 
-### Set $v_*$
+### Private value based algorithm
+
+#### Set $v_*$
 
 Assuming i.i.d. and buyers are risk-neutral with only **preference uncertainty**, the optimal reserve price can be set according to [11] as: 
 
@@ -124,13 +127,13 @@ For pure **preference uncertainty** and **quality uncertainty**, the optimal res
 
 $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 
-### Set $F$
+#### Set $F$
 
-1. $F$ is often assumed to be Uniform distribution or Log-normal distribution [12, 15].
+1. $F$ is often assumed to be Uniform distribution or Log-normal distribution [12, 15]. (If $X$ is log-normally distributed, then $Y = log(X)$ is normally distributed). 
 2. The parameters of F are set based on historical data [15].
 3. When $F$ is uniform distribution ($F(v) = v$ for $v \in [0, 1]$), and $v_0 = 0$, it is proved that $v_* = \frac{1}{2}$ [14].
 
-### Set $v_0$
+#### Set $v_0$
 
 1. From guaranteed contract with a flat CPM [15].
 
@@ -139,6 +142,22 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
    $\alpha(t) = \frac{1}{M} \sum_{i=t-M}^{t-1} r(i)$
 
    Then, plug in the previous equation and get $V_0$. 
+
+### Private value free algorithm
+
+#### FIXED and ZERO algorithms
+
+* Set $\alpha(t) = \alpha$ for all time steps. 
+* $\alpha$ is pre-chosen, can adopt negotiated contract price as the reserve price [15]. 
+* Probably the most widely adopted algorithm in today's marketplaces [15]. 
+* When $\alpha = 0$, it becomes the ZERO algorithm. 
+* Performed well under certain circumstances [15].
+
+#### AVERAGE and WeightedL algorithm
+
+* $\alpha(t) = \frac{1}{M} \sum_{i=t-M}^{t-1} r(i)$
+* $\alpha(t)  = \frac{1}{M}\sum_{i=t-M}^{t-1} w(i,t)r(i)$
+* Recognizes the fluctuation of demand and supply in the market [15]. 
 
 ## Learning Algorithms
 
@@ -202,7 +221,7 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
   * **Hyper-parameter tuning**: in practice, one needs to tune 4 parameters based on the training data. 
   * **Assumptions**: needs to assume the distribution of bids, which can lead to poor performance (9).  
 
-### DC Programming (Not DC Comics :smile:) [10]
+### DC (difference of convex functions) Programming (Not DC Comics :smile:) [10]
 
 * Core Idea (15):
 
@@ -212,6 +231,7 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
   * **Assumptions**: did not assume bids are i.i.d. and are very close to reality (3).
   * **Rigorous**: present a very detailed proof of the algorithm. 
   * **Speed**: $O(mlogm)$ (2).
+  * **Performance**: out-performs convex-surrogate (CVX), ridge regression (Reg), and algorithm that uses no features to set reserve prices (NF) (17). 
 * Cons:
   * **Complexity**: cannot understand :smile:. 
 
@@ -225,6 +245,24 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 
   * **Complexity**: cannot understand :smile:
 
+### Linear Regression and  SGD (Stochastic Gradient Descent) [23]
+
+* Core Idea:
+
+  ![image-20210719112646661](C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210719112646661.png)
+
+  ![image-20210719112712407](C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210719112712407.png)
+
+* Pros:
+
+  * **Complexity**: simple to implement. 
+  * **Performance**: robust, statistically significant daily revenue lift of about 35% (533). 
+
+* Cons:
+
+  * **Linearity**: the model uses linear features, which can return negative values (535).
+  * 
+
 ## Comparison
 
 | Algorithms                                            | Parameters                                              | Update between auctions |
@@ -233,7 +271,7 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 | Clustering and Regression                             | $k$, Bid Selector, attributes for an auction            | No                      |
 | Multiple Linear Regression with Kalman Filter (MLRKF) | data features (188)                                     | Yes                     |
 | OneShot                                               | $\epsilon$, $\lambda_h$, $\lambda_e$, $\lambda_l$ (5)   | Yes                     |
-| DC Programming                                        | a lot                                                   | Yes                     |
+| DC Programming (Not DC Comics :smile:)                | a lot                                                   | Yes                     |
 | Dynamic Pricing model                                 | a lot                                                   |                         |
 
 ## Detailed Review
@@ -445,4 +483,7 @@ Core Ideas:
 18. X. Li, L. Liu, L. Wu, Z. Zhang, “ Predicting the final prices of online  auction items,”Expert Systems with Applications,vol.32,no.3,pp.542- 550, 2006.
 19. C.H. Wu, M.Y. Yeh, M.S. Chen, “Predicting winning price in real time bidding with censored data,” ACM SIGKDD International  Conference on Knowledge Discovery and Data Mining, ACM, pp.  1305–1314, 2015.
 20. Yuan, Shuai, et al. “Real-Time Bidding for Online Advertising.” *Proceedings of the Seventh International Workshop on Data Mining for Online Advertising - ADKDD '13*, 2013, doi:10.1145/2501040.2501980. 
+21. M.R. Khadge, M.V. Kulkarni, “Machine Learning Approach For  Predicting End Price Of Online Auction,” in Proceedings of 2016 International Confeerence on Inventive Computation  Technologies(ICICT), Coimbatore, India, Aug.2016,pp. 748–752. 
+22. S.Zhang, W. Jank , G. Shmueli, “Real-time forecasting of online auctions via functional -nearest neighbors,” International Journal of  Forecasting,vol.26,no.4, pp.666-683, 2010.
+23. Austin, Daniel, et al. “Reserve Price Optimization at Scale.” *2016 IEEE International Conference on Data Science and Advanced Analytics (DSAA)*, 2016, doi:10.1109/dsaa.2016.32. 
 

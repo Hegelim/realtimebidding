@@ -36,6 +36,8 @@
 * **Generalized second-price auction (GSP)** [link](https://en.wikipedia.org/wiki/Generalized_second-price_auction) - a non-truthful auction mechanism for multiple items. Each bidder places a bid. The highest bidder gets the first slot, the second-highest, the second slot and so on, but the highest bidder pays the price bid by the second-highest bidder, the second-highest pays the price bid by the third-highest, and so on.
 * **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information [10].
 * **Private Information** - the information that is not available to the public. For example, the bidder's valuation of the item. 
+* **Publisher** - a person or a company that displays ads on their digital space. 
+* **Advertiser** - a person or company that advertises a product, service, or event.
 * **Supply-side platform (SSP)** - a supply-side platform or sell-side platform is a technology platform to enable web publishers and digital out-of-home media owners to manage their advertising inventory, fill it with ads, and receive revenue.
 * **Demand-side platform (DSP)** - a demand-side platform is a system that allows buyers of digital advertising inventory to manage multiple ad exchange and data exchange accounts through one interface.
 * **Ad Exchange** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed.
@@ -88,7 +90,9 @@
 ## Core Findings
 
 * The optimal reserve price does not depend on the number of buyers [14].
-* In practice, the Uniform distribution works better than Log-normal distribution [15, 20].
+* In practice, the Uniform distribution works better than Log-normal distribution [12, 15, 20].
+* In reality, reserve prices are substantially lower than the theoretically optimal ones [12].
+* The more bidders, the lower the effect of setting an optimal reserve price [12]. 
 
 ## Variations
 
@@ -131,7 +135,7 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 
 1. $F$ is often assumed to be Uniform distribution or Log-normal distribution [12, 15]. (If $X$ is log-normally distributed, then $Y = log(X)$ is normally distributed). 
 2. The parameters of F are set based on historical data [15].
-3. When $F$ is uniform distribution ($F(v) = v$ for $v \in [0, 1]$), and $v_0 = 0$, it is proved that $v_* = \frac{1}{2}$ [14].
+3. When $F$ is uniform distribution ($F(v) = v$ for $v \in [0, 1]$), and $v_0 = 0$, it is proved that $v_* = \frac{1}{2}$ [12, 14].
 
 #### Set $v_0$
 
@@ -158,6 +162,11 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 * $\alpha(t) = \frac{1}{M} \sum_{i=t-M}^{t-1} r(i)$
 * $\alpha(t)  = \frac{1}{M}\sum_{i=t-M}^{t-1} w(i,t)r(i)$
 * Recognizes the fluctuation of demand and supply in the market [15]. 
+
+### Limitations
+
+* In practice, we don't usually meet these assumptions. 
+* Can result in poor performance. 
 
 ## Learning Algorithms
 
@@ -257,22 +266,23 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 
   * **Complexity**: simple to implement. 
   * **Performance**: robust, statistically significant daily revenue lift of about 35% (533). 
+  * **Complexity**: relatively easy to understand and implement. 
 
 * Cons:
 
   * **Linearity**: the model uses linear features, which can return negative values (535).
-  * 
 
 ## Comparison
 
-| Algorithms                                            | Parameters                                              | Update between auctions |
-| ----------------------------------------------------- | ------------------------------------------------------- | ----------------------- |
-| Bid-Price Policy with Dynamic Pricing $\mu^B$         | user attributes, placement qualities, pricing functions | No                      |
-| Clustering and Regression                             | $k$, Bid Selector, attributes for an auction            | No                      |
-| Multiple Linear Regression with Kalman Filter (MLRKF) | data features (188)                                     | Yes                     |
-| OneShot                                               | $\epsilon$, $\lambda_h$, $\lambda_e$, $\lambda_l$ (5)   | Yes                     |
-| DC Programming (Not DC Comics :smile:)                | a lot                                                   | Yes                     |
-| Dynamic Pricing model                                 | a lot                                                   |                         |
+| Algorithms                                            | Parameters                                              | Update between auctions | Yewen's advice      |
+| ----------------------------------------------------- | ------------------------------------------------------- | ----------------------- | ------------------- |
+| Bid-Price Policy with Dynamic Pricing $\mu^B$         | user attributes, placement qualities, pricing functions | No                      | Hard                |
+| Clustering and Regression                             | $k$, Bid Selector, attributes for an auction            | No                      | Not closely related |
+| Multiple Linear Regression with Kalman Filter (MLRKF) | data features (188)                                     | Yes                     | Most promising      |
+| OneShot                                               | $\epsilon$, $\lambda_h$, $\lambda_e$, $\lambda_l$ (5)   | Yes                     | Most promising      |
+| DC Programming (Not DC Comics :smile:)                | a lot                                                   | Yes                     | Hard                |
+| Dynamic Pricing model                                 | a lot                                                   | Yes                     | Hard                |
+| Linear Regression and  SGD                            | data features                                           | Yes                     | Most promising      |
 
 ## Detailed Review
 

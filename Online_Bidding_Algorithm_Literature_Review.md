@@ -291,7 +291,7 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 
 ## Possible Solution
 
-![image-20210722104250685](C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210722104250685.png)
+![](C:\Users\zhouyewen_sx\Desktop\realtimebidding_literature_review\solution.png)
 
 ## Conclusion
 

@@ -22,7 +22,7 @@
 2. Optimal Auction Design 
 3. Reserve Prices in Internet Advertising Auctions: A Field Experiment
 4. An Empirical Study of Reserve Price Optimisation in Real-Time Bidding
-5. Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online  Auctions
+5. Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online Auctions
 6. Real-time Bidding for Online Advertising: Measurement and Analysis
 7. Learning Algorithms for Second-Price Auctions with Reserve
 8. Reserve Price Optimization at Scale
@@ -31,8 +31,8 @@
 
 ## Terminology
 
-* **Real-time bidding (RTB)**-  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second (usually less than 100ms [5, 14]) It allows advertisers to bid for impressions based on targeted audiences [7] on a per-access bases [5].
-* **Vickrey Auction (Second price auction)** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid. This type of auction gives participants an incentive to reveal their true valuation of the item [5].
+* **<u>Real-time bidding (RTB)</u>**-  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second (usually less than 100ms [5, 14]) It allows advertisers to bid for impressions based on targeted audiences [7] on a per-access bases [5].
+* **<u>Vickrey Auction (Second price auction)</u>** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid. This type of auction gives participants an incentive to reveal their true valuation of the item [5].
 * **Generalized second-price auction (GSP)** [link](https://en.wikipedia.org/wiki/Generalized_second-price_auction) - a non-truthful auction mechanism for multiple items. Each bidder places a bid. The highest bidder gets the first slot, the second-highest, the second slot and so on, but the highest bidder pays the price bid by the second-highest bidder, the second-highest pays the price bid by the third-highest, and so on.
 * **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information [10].
 * **Private Information** - the information that is not available to the public. For example, the bidder's valuation of the item. 
@@ -41,13 +41,13 @@
 * **Supply-side platform (SSP)** - a supply-side platform or sell-side platform is a technology platform to enable web publishers and digital out-of-home media owners to manage their advertising inventory, fill it with ads, and receive revenue.
 * **Demand-side platform (DSP)** - a demand-side platform is a system that allows buyers of digital advertising inventory to manage multiple ad exchange and data exchange accounts through one interface.
 * **Ad Exchange** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed.
-* **User attributes (Impression attributes/user information/public information [10])** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc [2].
-* **Placement qualities** **(quality score [15]) **- some statistics that measure the quality of the impression. For instance, click-through rate (CTR) or conversation rate (CVR) then times the value of a click/conversation [17]. $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her [2].
-* **Value estimate** **(reservation value/private value [15])**- for each bidder and seller $i$, there is some quantity $t_i$ which is $i$'s value estimate for the object, and which represents the maximum amount which $i$ is willing to pay for the object given his current information about it [11].
+* **<u>User attributes (Impression attributes/user information/public information [10])</u>** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc [2].
+* **<u>Placement qualities (quality score [15])</u>**- some statistics that measure the quality of the impression. For instance, click-through rate (CTR) or conversation rate (CVR) then times the value of a click/conversation [17]. $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her [2].
+* **<u>Value estimate (reservation value/private value [15])</u>**- for each bidder and seller $i$, there is some quantity $t_i$ which is $i$'s value estimate for the object, and which represents the maximum amount which $i$ is willing to pay for the object given his current information about it [11].
 * **Bid** - each advertiser submits a bid $p$ to online bidding platform that represents their private valuation of the item. Usually, we assume that bids are symmetric (drawn from the same distribution) and independent conditional on user attributes disclosed [2]. 
 * **Key Performance Index (KPI)** - the total performance of a campaign, e.g. the number of clicks, conversations, or total revenue [5, 17].
 * **Opportunity cost** - the amount of money the publisher could have earned by selling impressions through guaranteed offline contracts [2, 7].
-* **Reserve price** - the lowest bid that the seller is willing to accept for his item. Only bids that are higher than this price can get involved in the auction [15]. 
+* **<u>Reserve price</u>** - the lowest bid that the seller is willing to accept for his item. Only bids that are higher than this price can get involved in the auction [15]. 
 * **Pricing function** - a function $p^*$ that quotes a reserve price based on bid and potentially user attributes [2].
 * **Revenue** - the amount earned. In our case, we care about the revenue for the publisher. 
 * **Preference uncertainty** - the bidders' personal preferences might be unknown to other agents (for example, if the object is painting, the others might not know how much he really enjoys looking at the painting) [11].
@@ -74,7 +74,11 @@
 8. The RTB is Vickrey Auction (second-price auction) [5, 11, 14].
 9. The publisher has access to historical data [10]. 
 10. The publisher has access to user attributes [8, 10].
-11. The publisher and advertisers are risk-neutral [11, 14]. 
+11. The publisher and advertisers are risk-neutral [11, 14].
+
+<img src="C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210722110938589.png" alt="image-20210722110938589" style="zoom:67%;" />
+
+<img src="C:\Users\zhouyewen_sx\Desktop\realtimebidding_literature_review\Utility-function-shapes-for-risk-averse-risk-neutral-and-risk-seeking-individuals.png" style="zoom:70%;" />
 
 ## Common Technologies
 
@@ -162,11 +166,6 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 * $\alpha(t) = \frac{1}{M} \sum_{i=t-M}^{t-1} r(i)$
 * $\alpha(t)  = \frac{1}{M}\sum_{i=t-M}^{t-1} w(i,t)r(i)$
 * Recognizes the fluctuation of demand and supply in the market [15]. 
-
-### Limitations
-
-* In practice, we don't usually meet these assumptions. 
-* Can result in poor performance. 
 
 ## Learning Algorithms
 
@@ -284,6 +283,22 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 | Dynamic Pricing model                                 | a lot                                                   | Yes                     | Hard                |
 | Linear Regression and  SGD                            | data features                                           | Yes                     | Most promising      |
 
+## Limitations:
+
+* i.i.d.: in practice, bids are usually correlated. 
+* second-price auction: we are doing first-price auction. 
+* RTB: in our setting, there is lag. 
+
+## Possible Solution
+
+![image-20210722104250685](C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210722104250685.png)
+
+## Conclusion
+
+* for simplest model - assumptions + pure theories (FIXED, AVERAGE, WEIGHTEDL...)
+* for intermediate model - assumptions +  learning coefficients (MLRKF, OneShot, Linear Regression + SGD...)
+* for more advanced model - relax assumptions (DC Programming, Multi-armed Bandit...)
+
 ## Detailed Review
 
 ### Optimal Auctions
@@ -306,13 +321,11 @@ Assumptions:
 
 Core ideas:
 
-- if the assumptions hold, then the **reserve price** for the seller should be set as (385): 
-![](https://paper-attachments.dropbox.com/s_62AABE53A76032CEEF0DE44BED012E4258F8A27A9842CB7A23AB17CA0C0AB7FD_1625810740923_image.png)
-- The high and second bid auctions with reserve price  b0 = v* are both optimal in the family of auctions. 
+- The high and second bid auctions with reserve price  $b_0 = v*$ are both optimal in the family of auctions. 
 - In asymmetrical model (where the reservation prices of the buyers are no longer drawn from a **common** distribution F), The assignment of the good and the appropriate buyer payment will depend not only on the list of offers, but also on the **identities** of the buyers who submit the bids. In short, an optimal auction under asymmetric conditions violates the principle of buyer anonymity (389).
 - Under the assumption of risk neutrality, the seller can do no better than to employ the second bid auction with an optimal reserve price. In this auction, buyers will have no difficulty formulating an optimal bidding strategy. Nor need they know the form of the distribution function F(u). Against any distribution of opponents' bids, each buyer's dominant strategy is to **bid his reservation value** (389).
 - The optimal reserve price does not depend on the number of buyers (390). 
-- Assuming that the reservation values (buyers’ valuation of the good) follow a uniform distribution and that the seller’s valuation of the object $v0 = 0$, then the optimal price is 1/2.(386). 
+- Assuming that the reservation values (buyers’ valuation of the good) follow a uniform distribution and that the seller’s valuation of the object $v_0 = 0$, then the optimal price is 1/2.(386). 
 
 Limitations:
 

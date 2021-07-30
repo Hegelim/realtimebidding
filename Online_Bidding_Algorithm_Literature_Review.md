@@ -22,17 +22,18 @@
 2. Optimal Auction Design 
 3. Reserve Prices in Internet Advertising Auctions: A Field Experiment
 4. An Empirical Study of Reserve Price Optimisation in Real-Time Bidding
-5. Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online Auctions
-6. Real-time Bidding for Online Advertising: Measurement and Analysis
-7. Learning Algorithms for Second-Price Auctions with Reserve
-8. Reserve Price Optimization at Scale
-9. Information Disclosure in Real-Time Bidding  Advertising Markets
-10. Predicting the final prices of online auction items
+5. A Contextual-Bandit Approach to Personalized News Article Recommendation
+6. Multiple Linear Regression with Kalman Filter for Predicting End Prices of Online Auctions
+7. Real-time Bidding for Online Advertising: Measurement and Analysis
+8. Learning Algorithms for Second-Price Auctions with Reserve
+9. Reserve Price Optimization at Scale
+10. Information Disclosure in Real-Time Bidding  Advertising Markets
+11. Predicting the final prices of online auction items
 
 ## Terminology
 
 * **<u>Real-time bidding (RTB)</u>**-  the process in which digital advertising inventory is bought and sold. This process occurs in less than a second (usually less than 100ms [5, 14]) It allows advertisers to bid for impressions based on targeted audiences [7] on a per-access bases [5].
-* **<u>Vickrey Auction (Second price auction)</u>** [link](https://en.wikipedia.org/wiki/Vickrey_auction)- a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid. This type of auction gives participants an incentive to reveal their true valuation of the item [5].
+* **<u>Vickrey Auction (Second price auction)</u>** [link](https://en.wikipedia.org/wiki/Vickrey_auction) - a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid. This type of auction gives participants an incentive to reveal their true valuation of the item [5].
 * **Generalized second-price auction (GSP)** [link](https://en.wikipedia.org/wiki/Generalized_second-price_auction) - a non-truthful auction mechanism for multiple items. Each bidder places a bid. The highest bidder gets the first slot, the second-highest, the second slot and so on, but the highest bidder pays the price bid by the second-highest bidder, the second-highest pays the price bid by the third-highest, and so on.
 * **Public Information** - the information that are available to the public during auctions. In online bidding, it can be user information [10].
 * **Private Information** - the information that is not available to the public. For example, the bidder's valuation of the item. 
@@ -40,10 +41,10 @@
 * **Advertiser** - a person or company that advertises a product, service, or event.
 * **Supply-side platform (SSP)** - a supply-side platform or sell-side platform is a technology platform to enable web publishers and digital out-of-home media owners to manage their advertising inventory, fill it with ads, and receive revenue.
 * **Demand-side platform (DSP)** - a demand-side platform is a system that allows buyers of digital advertising inventory to manage multiple ad exchange and data exchange accounts through one interface.
-* **Ad Exchange** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed.
-* **<u>User attributes (Impression attributes/user information/public information [10])</u>** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc [2].
-* **<u>Placement qualities (quality score [15])</u>**- some statistics that measure the quality of the impression. For instance, click-through rate (CTR) or conversation rate (CVR) then times the value of a click/conversation [17]. $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her [2].
-* **<u>Value estimate (reservation value/private value [15])</u>**- for each bidder and seller $i$, there is some quantity $t_i$ which is $i$'s value estimate for the object, and which represents the maximum amount which $i$ is willing to pay for the object given his current information about it [11].
+* **<u>Ad Exchange</u>** - where advertisers bid and compete between each other for an ad slot. The winner then pays the publisher and his ad is displayed.
+* **<u>User attributes (Impression attributes/user information/public information [10]/ context [24])</u>** - a vector of attributes $U_i \in \mathcal{U}$ where $\mathcal{U}$ is some finite subset of $\mathbb{R}^M$ that uniquely identify users/impressions. For instance, the web address, user's demographics, device, operating system, etc [2].
+* **<u>Placement qualities (quality score [15])</u>** - some statistics that measure the quality of the impression. For instance, click-through rate (CTR) or conversation rate (CVR) then times the value of a click/conversation [17]. $Q_{i,a}$ represents the quality advertiser a would receive if the impression i is assigned to her [2].
+* **<u>Value estimate (reservation value/private value [15])</u>** - for each bidder and seller $i$, there is some quantity $t_i$ which is $i$'s value estimate for the object, and which represents the maximum amount which $i$ is willing to pay for the object given his current information about it [11].
 * **Bid** - each advertiser submits a bid $p$ to online bidding platform that represents their private valuation of the item. Usually, we assume that bids are symmetric (drawn from the same distribution) and independent conditional on user attributes disclosed [2]. 
 * **Key Performance Index (KPI)** - the total performance of a campaign, e.g. the number of clicks, conversations, or total revenue [5, 17].
 * **Opportunity cost** - the amount of money the publisher could have earned by selling impressions through guaranteed offline contracts [2, 7].
@@ -52,6 +53,7 @@
 * **Revenue** - the amount earned. In our case, we care about the revenue for the publisher. 
 * **Preference uncertainty** - the bidders' personal preferences might be unknown to other agents (for example, if the object is painting, the others might not know how much he really enjoys looking at the painting) [11].
 * **Quality uncertainty** - the bidder  might have some special information about the intrinsic quality of the object (he might  know if the painting is an old master or a copy) [11].
+* **Cold start** - when users arrive with no historical data [24]. 
 
 ## Workflow [2, 5]
 
@@ -78,7 +80,7 @@
 
 <img src="C:\Users\zhouyewen_sx\AppData\Roaming\Typora\typora-user-images\image-20210722110938589.png" alt="image-20210722110938589" style="zoom:67%;" />
 
-<img src="C:\Users\zhouyewen_sx\Desktop\realtimebidding_literature_review\Utility-function-shapes-for-risk-averse-risk-neutral-and-risk-seeking-individuals.png" style="zoom:70%;" />
+<img src="C:\Users\zhouyewen_sx\Desktop\realtimebidding\Utility-function-shapes-for-risk-averse-risk-neutral-and-risk-seeking-individuals.png" style="zoom:67%;" />
 
 ## Common Technologies
 
@@ -88,6 +90,7 @@
 * Deep Learning 
 * SVM
 * KNN [22]
+* Collaborative filtering
 * Mixed Models
 * Pure Theories
 
@@ -291,13 +294,13 @@ $v_* = v_0 + \frac{1 - F(v_*)}{F'(v_*)}$
 
 ## Possible Solution
 
-![](C:\Users\zhouyewen_sx\Desktop\realtimebidding_literature_review\solution.png)
+![](C:\Users\zhouyewen_sx\Desktop\realtimebidding\solution.png)
 
 ## Conclusion
 
 * for simplest model - assumptions + pure theories (FIXED, AVERAGE, WEIGHTEDL...)
 * for intermediate model - assumptions +  learning coefficients (MLRKF, OneShot, Linear Regression + SGD...)
-* for more advanced model - relax assumptions (DC Programming, Multi-armed Bandit...)
+* for more advanced model - relax assumptions (DC Programming...)
 
 ## Detailed Review
 
@@ -509,4 +512,5 @@ Core Ideas:
 21. M.R. Khadge, M.V. Kulkarni, “Machine Learning Approach For  Predicting End Price Of Online Auction,” in Proceedings of 2016 International Confeerence on Inventive Computation  Technologies(ICICT), Coimbatore, India, Aug.2016,pp. 748–752. 
 22. S.Zhang, W. Jank , G. Shmueli, “Real-time forecasting of online auctions via functional -nearest neighbors,” International Journal of  Forecasting,vol.26,no.4, pp.666-683, 2010.
 23. Austin, Daniel, et al. “Reserve Price Optimization at Scale.” *2016 IEEE International Conference on Data Science and Advanced Analytics (DSAA)*, 2016, doi:10.1109/dsaa.2016.32. 
+24. Li, Lihong, et al. “A Contextual-Bandit Approach to Personalized News Article Recommendation.” *Proceedings of the 19th International Conference on World Wide Web - WWW '10*, 2010, doi:10.1145/1772690.1772758. 
 
